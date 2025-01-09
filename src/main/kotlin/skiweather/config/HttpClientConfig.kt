@@ -6,8 +6,8 @@ import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.http.ContentType.Application.Json
 import io.ktor.serialization.jackson.JacksonConverter
 
-val httpClient by lazy {
-    HttpClient(Java) {
+fun createHttpClient(): HttpClient {
+    return HttpClient(Java) {
         install(ContentNegotiation) {
             register(Json, JacksonConverter(objectMapper))
         }

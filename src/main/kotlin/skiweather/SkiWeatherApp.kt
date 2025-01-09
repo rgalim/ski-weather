@@ -8,11 +8,10 @@ import io.ktor.server.netty.*
 import io.ktor.server.plugins.contentnegotiation.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import skiweather.client.WeatherApiClient
-import skiweather.config.httpClient
-import skiweather.config.loadConfig
+import org.koin.ktor.ext.inject
+import org.koin.ktor.plugin.Koin
 import skiweather.config.objectMapper
-import skiweather.service.LocationService
+import skiweather.di.appModule
 import skiweather.service.WeatherService
 
 fun main() {
@@ -22,14 +21,15 @@ fun main() {
 }
 
 fun Application.module() {
+    install(Koin) {
+        modules(appModule)
+    }
+
     install(ContentNegotiation) {
         register(Json, JacksonConverter(objectMapper))
     }
 
-    val config = loadConfig()
-    val weatherApiClient = WeatherApiClient(config, httpClient)
-    val locationService = LocationService()
-    val weatherService = WeatherService(locationService, weatherApiClient)
+    val weatherService by inject<WeatherService>()
 
     routing {
         get("/weather") {
