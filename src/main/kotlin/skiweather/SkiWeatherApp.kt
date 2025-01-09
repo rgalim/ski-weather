@@ -6,12 +6,12 @@ import io.ktor.server.application.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
 import io.ktor.server.plugins.contentnegotiation.*
-import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import org.koin.ktor.ext.inject
 import org.koin.ktor.plugin.Koin
 import skiweather.config.objectMapper
 import skiweather.di.appModule
+import skiweather.route.weatherRoute
 import skiweather.service.WeatherService
 
 fun main() {
@@ -32,11 +32,6 @@ fun Application.module() {
     val weatherService by inject<WeatherService>()
 
     routing {
-        get("/weather") {
-
-            val weather = weatherService.getWeather()
-
-            call.respond(weather)
-        }
+        weatherRoute(weatherService)
     }
 }
