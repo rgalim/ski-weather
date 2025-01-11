@@ -7,7 +7,7 @@ import org.junit.jupiter.api.assertThrows
 import org.mockito.Mockito.*
 import skiweather.TestConstants.LOCATIONS
 import skiweather.client.WeatherApiClient
-import skiweather.TestConstants.WEATHER_SOLDEN
+import skiweather.exception.WeatherApiException
 import skiweather.model.weather.*
 
 class WeatherServiceTest {
@@ -19,26 +19,38 @@ class WeatherServiceTest {
     @Test
     fun `should return list of weather objects when successful response from weather api`() =
         runBlocking {
-            val weatherKitzbuhel = Weather(
-                WeatherLocation("Kitzbühel", "Tirol", "Österreich"),
-                CurrentWeather(-8.0, WeatherCondition("Cloudy", "//icon.png"), 14.3, 87),
-                WeatherForecast(listOf(
+            val weatherForecastSolden = WeatherForecast(
+                WeatherLocation("Sölden", "Tirol", "Österreich"),
+                ForecastList(listOf(
                     DayForecast(
-                        TotalDayData(-0.4, 5.69, 90),
+                        "2025-01-11",
+                        TotalDayData(0.07),
                         listOf(
-                            HourData("2025-01-08 00:00", -2.2, 10.6, 0.0),
-                            HourData("2025-01-08 01:00", -2.6, 10.1, 0.0)
+                            HourData("2025-01-11 00:00", -11.9, 5.8, 95, 71, 5.0, 0),
+                            HourData("2025-01-11 01:00", -11.7, 6.1, 95, 71, 7.0, 0)
+                        ))
+                ))
+            )
+            val weatherForecastKitzbuhel = WeatherForecast(
+                WeatherLocation("Kitzbühel", "Tirol", "Österreich"),
+                ForecastList(listOf(
+                    DayForecast(
+                        "2025-01-11",
+                        TotalDayData(0.04),
+                        listOf(
+                            HourData("2025-01-11 00:00", -11.3, 5.8, 81, 3, 10.0, 0),
+                            HourData("2025-01-11 01:00", -12.4, 6.5, 84, 2, 10.0, 0)
                         ))
                 ))
             )
 
             `when`(locationService.getLocations()).thenReturn(LOCATIONS)
-            `when`(weatherApiClient.getWeather("Sölden")).thenReturn(WEATHER_SOLDEN)
-            `when`(weatherApiClient.getWeather("Kitzbühel")).thenReturn(weatherKitzbuhel)
+            `when`(weatherApiClient.getWeatherForecast("Sölden")).thenReturn(weatherForecastSolden)
+            `when`(weatherApiClient.getWeatherForecast("Kitzbühel")).thenReturn(weatherForecastKitzbuhel)
 
             val actualWeather = weatherService.getWeather()
 
-            assertEquals(listOf(WEATHER_SOLDEN, weatherKitzbuhel), actualWeather)
+            assertEquals(listOf(weatherForecastSolden, weatherForecastKitzbuhel), actualWeather)
         }
 
     @Test
@@ -51,5 +63,30 @@ class WeatherServiceTest {
             assertEquals("The list of locations must not be empty", exception.message)
 
             verifyNoInteractions(weatherApiClient)
+        }
+
+    @Test
+    fun `should throw exception when error response from weather api`() =
+        runBlocking {
+            val weatherForecastSolden = WeatherForecast(
+                WeatherLocation("Sölden", "Tirol", "Österreich"),
+                ForecastList(listOf(
+                    DayForecast(
+                        "2025-01-11",
+                        TotalDayData(0.07),
+                        listOf(
+                            HourData("2025-01-11 00:00", -11.9, 5.8, 95, 71, 5.0, 0),
+                            HourData("2025-01-11 01:00", -11.7, 6.1, 95, 71, 7.0, 0)
+                        ))
+                ))
+            )
+
+            `when`(locationService.getLocations()).thenReturn(LOCATIONS)
+            `when`(weatherApiClient.getWeatherForecast("Sölden")).thenReturn(weatherForecastSolden)
+            `when`(weatherApiClient.getWeatherForecast("Kitzbühel")).thenThrow(WeatherApiException("Something went wrong"))
+
+            val exception = assertThrows<WeatherApiException> { weatherService.getWeather() }
+
+            assertEquals("Something went wrong", exception.message)
         }
 }

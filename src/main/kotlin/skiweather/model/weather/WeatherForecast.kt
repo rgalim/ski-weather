@@ -1,5 +1,6 @@
 package skiweather.model.weather
 
 data class WeatherForecast(
-    val forecastday: List<DayForecast>
+    val location: WeatherLocation,
+    val forecast: ForecastList,
 )
