@@ -1,5 +1,7 @@
 package skiweather.utils
 
+import skiweather.exception.WeatherApiException
+
 class ErrorHandler {
     companion object {
         private val logger = logger<ErrorHandler>()
@@ -11,7 +13,7 @@ class ErrorHandler {
         ): Nothing {
             val errorMessage = "Unexpected status $status while fetching weather for $resource"
             logger.error("$errorMessage. Body: $body")
-            throw Exception(errorMessage)
+            throw WeatherApiException(errorMessage)
         }
     }
 }
