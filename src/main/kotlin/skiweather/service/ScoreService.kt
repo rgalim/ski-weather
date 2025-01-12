@@ -1,21 +1,21 @@
 package skiweather.service
 
-import skiweather.model.weather.SkiArea
+import skiweather.model.weather.SkiAreaWeather
 import kotlin.math.round
 
 class ScoreService {
 
-    fun scoreSkiArea(area: SkiArea): Double {
+    fun scoreSkiArea(weather: SkiAreaWeather): Double {
         var score = 0.0
 
-        score += calculateTemperature(area.temperature)
-        score += calculateDailySnowfall(area.dailySnowfall)
-        score += calculateWeeklySnowfall(area.weeklySnowfall)
-        score += calculateWind(area.wind)
-        score += calculateVisibility(area.visibility)
-        score += calculateHumidity(area.humidity)
-        score += calculateCloud(area.cloud)
-        score += calculateUv(area.uv)
+        score += calculateTemperature(weather.temperature)
+        score += calculateDailySnowfall(weather.dailySnowfall)
+        score += calculateWeeklySnowfall(weather.weeklySnowfall)
+        score += calculateWind(weather.wind)
+        score += calculateVisibility(weather.visibility)
+        score += calculateHumidity(weather.humidity)
+        score += calculateCloud(weather.cloud)
+        score += calculateUv(weather.uv)
 
         return score
     }
@@ -74,10 +74,10 @@ class ScoreService {
         }
     }
 
-    private fun calculateUv(uv: Int): Double {
+    private fun calculateUv(uv: Double): Double {
         return when (uv) {
-            in 0..3 -> 10.0
-            in 3..5 -> 5.0
+            in 0.0..3.0 -> 10.0
+            in 3.0..5.0 -> 5.0
             else -> 0.0
         }
     }
