@@ -1,6 +1,7 @@
 package skiweather
 
 import skiweather.config.AppConfig
+import skiweather.model.weather.*
 
 object TestConstants {
     val MOCKED_APP_CONFIG =
@@ -9,6 +10,55 @@ object TestConstants {
             "apiKey"
         )
     val LOCATIONS = listOf("Sölden", "Kitzbühel")
+    val WEATHER_FORECAST_SOLDEN = WeatherForecast(
+        WeatherLocation("Sölden", "Tirol", "Österreich"),
+        ForecastList(
+            listOf(
+                DayForecast(
+                    "2025-01-11",
+                    TotalDayData(0.07),
+                    listOf(
+                        HourData("2025-01-11 00:00", -11.9, 5.8, 95, 71, 5.0, 0.0),
+                        HourData("2025-01-11 01:00", -11.7, 6.1, 95, 71, 7.0, 0.0)
+                    )
+                )
+            )
+        )
+    )
+    val WEATHER_FORECAST_KITZBUHEL = WeatherForecast(
+        WeatherLocation("Kitzbühel", "Tirol", "Österreich"),
+        ForecastList(listOf(
+            DayForecast(
+                "2025-01-11",
+                TotalDayData(0.04),
+                listOf(
+                    HourData("2025-01-11 00:00", -11.3, 5.8, 81, 3, 10.0, 0.0),
+                    HourData("2025-01-11 01:00", -12.4, 6.5, 84, 2, 10.0, 0.0)
+                ))
+        ))
+    )
+    val SKI_AREA_WEATHER_SOLDEN = SkiAreaWeather(
+        "Sölden",
+        -13.8,
+        0.4,
+        10.0,
+        9.09,
+        7.82,
+        86,
+        39,
+        0.57
+    )
+    val SKI_AREA_WEATHER_KITZBUHEL = SkiAreaWeather(
+        "Kitzbühel",
+        -13.8,
+        0.4,
+        10.0,
+        9.09,
+        7.82,
+        86,
+        39,
+        0.57
+    )
     const val WEATHER_API_RESPONSE =
         // language=JSON
         """{

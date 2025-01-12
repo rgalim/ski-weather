@@ -6,8 +6,7 @@ import skiweather.client.WeatherApiClient
 import skiweather.config.AppConfig
 import skiweather.config.createHttpClient
 import skiweather.config.loadConfig
-import skiweather.service.LocationService
-import skiweather.service.WeatherService
+import skiweather.service.*
 
 val appModule = module {
 
@@ -17,7 +16,13 @@ val appModule = module {
 
     single<LocationService> { LocationService() }
 
+    single<ScoreService> { ScoreService() }
+
+    single<SkiAreaWeatherService> { SkiAreaWeatherService() }
+
     single<WeatherApiClient> { WeatherApiClient(get(), get()) }
 
     single<WeatherService> { WeatherService(get(), get()) }
+
+    single<SkiAreaService> { SkiAreaService(get(), get(), get()) }
 }

@@ -11,8 +11,8 @@ import org.koin.ktor.ext.inject
 import org.koin.ktor.plugin.Koin
 import skiweather.config.objectMapper
 import skiweather.di.appModule
-import skiweather.route.weatherRoute
-import skiweather.service.WeatherService
+import skiweather.route.skiAreas
+import skiweather.service.SkiAreaService
 
 fun main() {
     embeddedServer(Netty, port = 8000) {
@@ -29,9 +29,9 @@ fun Application.module() {
         register(Json, JacksonConverter(objectMapper))
     }
 
-    val weatherService by inject<WeatherService>()
+    val skiAreaService by inject<SkiAreaService>()
 
     routing {
-        weatherRoute(weatherService)
+        skiAreas(skiAreaService)
     }
 }
