@@ -9,12 +9,12 @@ class LocationService {
             "St. Anton am Arlberg",
             "Kitzbühel",
             "Ischgl",
-            "Zell am See-Kaprun",
-            "Mayrhofen",
-            "Lech-Zürs",
-            "Saalbach-Hinterglemm",
-            "Obergurgl-Hochgurgl",
-            "Schladming-Dachstein"
+            "Saalbach-Hinterglemm"
+//            "Zell am See-Kaprun",
+//            "Mayrhofen",
+//            "Lech-Zürs",
+//            "Obergurgl-Hochgurgl",
+//            "Schladming-Dachstein"
         )
     }
 }
