@@ -4,15 +4,13 @@ import skiweather.model.weather.DayForecast
 import skiweather.model.weather.HourData
 import skiweather.model.weather.SkiAreaWeather
 import skiweather.model.weather.WeatherForecast
+import skiweather.utils.Constants.DATE_TIME_FORMATTER
 import java.math.BigDecimal
 import java.math.RoundingMode
 import java.time.LocalDateTime
 import java.time.LocalTime
-import java.time.format.DateTimeFormatter
 
 class SkiAreaWeatherService {
-
-    private val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
 
     fun convertToSkiAreaWeather(weather: WeatherForecast): SkiAreaWeather {
         val dailyForecast: List<DayForecast> = weather.forecast.forecastday
@@ -46,7 +44,7 @@ class SkiAreaWeatherService {
     }
 
     private fun isDaySkiTime(timeString: String): Boolean {
-        val dateTime = LocalDateTime.parse(timeString, formatter)
+        val dateTime = LocalDateTime.parse(timeString, DATE_TIME_FORMATTER)
         val time = dateTime.toLocalTime()
 
         // The daytime interval for skiing 8:00 - 18:00
