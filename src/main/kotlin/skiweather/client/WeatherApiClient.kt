@@ -30,7 +30,7 @@ class WeatherApiClient(
 
         when (response.status) {
             HttpStatusCode.OK -> {
-                logger.info("Successfully fetched weather for location: $location")
+                logger.info("Successfully fetched weather forecast for location: $location")
                 return response.body<WeatherForecast>()
             }
             else -> ErrorHandler.handleUnexpectedError("location $location", response.status.value, response.bodyAsText())
@@ -56,7 +56,7 @@ class WeatherApiClient(
 
         when (response.status) {
             HttpStatusCode.OK -> {
-                logger.info("Successfully fetched weather for location: $location")
+                logger.info("Successfully fetched weather history for location: $location")
                 return response.body<WeatherForecast>()
             }
             else -> ErrorHandler.handleUnexpectedError("location $location", response.status.value, response.bodyAsText())

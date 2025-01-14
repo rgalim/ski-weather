@@ -37,6 +37,40 @@ object TestConstants {
                 ))
         ))
     )
+    val WEATHER_HISTORY_SOLDEN = WeatherForecast(
+        WeatherLocation("Sölden", "Tirol", "Österreich"),
+        ForecastList(
+            listOf(
+                DayForecast(
+                    "2025-01-10",
+                    TotalDayData(0.07),
+                    listOf()
+                ),
+                DayForecast(
+                    "2025-01-11",
+                    TotalDayData(0.13),
+                    listOf()
+                )
+            )
+        )
+    )
+    val WEATHER_HISTORY_KITZBUHEL = WeatherForecast(
+        WeatherLocation("Kitzbühel", "Tirol", "Österreich"),
+        ForecastList(
+            listOf(
+                DayForecast(
+                    "2025-01-10",
+                    TotalDayData(1.2),
+                    listOf()
+                ),
+                DayForecast(
+                    "2025-01-11",
+                    TotalDayData(3.5),
+                    listOf()
+                )
+            )
+        )
+    )
     val SKI_AREA_WEATHER_SOLDEN = SkiAreaWeather(
         "Sölden",
         -13.8,
