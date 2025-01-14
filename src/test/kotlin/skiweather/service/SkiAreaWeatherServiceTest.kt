@@ -5,6 +5,8 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.assertThrows
+import skiweather.TestConstants.WEATHER_HISTORY
+import skiweather.TestConstants.HISTORY_MAP
 import skiweather.model.weather.*
 
 class SkiAreaWeatherServiceTest {
@@ -102,20 +104,9 @@ class SkiAreaWeatherServiceTest {
 
         @Test
         fun `should convert to map with sum of total snow when valid weather history list`() {
-            val weatherHistoryList = listOf(
-                WeatherHistory(
-                    WeatherLocation("Sölden", "Tirol", "Österreich"),
-                    listOf(DayHistory("2025-01-10", 0.07), DayHistory("2025-01-11", 0.13))),
-                WeatherHistory(
-                    WeatherLocation("Kitzbühel", "Tirol", "Österreich"),
-                    listOf(DayHistory("2025-01-10", 1.2), DayHistory("2025-01-11", 3.5))),
-            )
+            val historyMap = skiAreaWeatherService.convertToHistoryMap(WEATHER_HISTORY)
 
-            val historyMap = skiAreaWeatherService.convertToHistoryMap(weatherHistoryList)
-
-            val expectedMap: Map<String, Double> = mapOf(Pair("Sölden", 0.2), Pair("Kitzbühel", 4.7))
-
-            assertEquals(expectedMap, historyMap)
+            assertEquals(HISTORY_MAP, historyMap)
         }
     }
 }
