@@ -1,20 +1,15 @@
 package skiweather.service
 
-import skiweather.model.weather.DayForecast
-import skiweather.model.weather.HourData
-import skiweather.model.weather.SkiAreaWeather
-import skiweather.model.weather.WeatherForecast
+import skiweather.model.weather.*
+import skiweather.utils.Constants.DATE_TIME_FORMATTER
 import java.math.BigDecimal
 import java.math.RoundingMode
 import java.time.LocalDateTime
 import java.time.LocalTime
-import java.time.format.DateTimeFormatter
 
 class SkiAreaWeatherService {
 
-    private val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
-
-    fun convertToSkiAreaWeather(weather: WeatherForecast): SkiAreaWeather {
+    fun convertToSkiAreaWeather(weather: WeatherForecast, totalWeeklySnowCm: Double): SkiAreaWeather {
         val dailyForecast: List<DayForecast> = weather.forecast.forecastday
         require(dailyForecast.isNotEmpty()) { "Daily forecast must not be empty" }
 
@@ -36,7 +31,7 @@ class SkiAreaWeatherService {
             weather.location.name,
             avgTemp,
             currentDayForecast.day.totalsnowCm,
-            10.0, // TODO: calculateWeeklySnowfall()
+            roundDouble(totalWeeklySnowCm),
             avgWind,
             avgVisibility,
             avgHumidity,
@@ -45,8 +40,14 @@ class SkiAreaWeatherService {
         )
     }
 
+    fun convertToHistoryMap(weatherHistoryList: List<WeatherHistory>): Map<String, Double> {
+        return weatherHistoryList.associate {
+            weatherHistory -> weatherHistory.location.name to weatherHistory.history.sumOf { it.totalSnowCm }
+        }
+    }
+
     private fun isDaySkiTime(timeString: String): Boolean {
-        val dateTime = LocalDateTime.parse(timeString, formatter)
+        val dateTime = LocalDateTime.parse(timeString, DATE_TIME_FORMATTER)
         val time = dateTime.toLocalTime()
 
         // The daytime interval for skiing 8:00 - 18:00
