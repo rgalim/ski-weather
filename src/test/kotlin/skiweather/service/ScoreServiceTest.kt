@@ -24,6 +24,6 @@ class ScoreServiceTest {
         val scoreService = ScoreService()
         val actualScore = scoreService.scoreSkiArea(skiAreaWeather)
 
-        assertEquals(75.0, actualScore)
+        assertEquals(65.0, actualScore)
     }
 }

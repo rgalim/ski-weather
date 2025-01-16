@@ -68,8 +68,8 @@ class ScoreService {
 
     private fun calculateCloud(cloud: Int): Double {
         return when (cloud) {
-            in 0..40 -> 20.0
-            in 40..70 -> 10.0
+            in 0..40 -> 10.0
+            in 40..70 -> 5.0
             else -> 0.0
         }
     }
