@@ -1,9 +1,8 @@
 package skiweather.service
 
 import skiweather.model.weather.*
+import skiweather.utils.CalculationUtils.Companion.roundDouble
 import skiweather.utils.Constants.DATE_TIME_FORMATTER
-import java.math.BigDecimal
-import java.math.RoundingMode
 import java.time.LocalDateTime
 import java.time.LocalTime
 
@@ -55,11 +54,5 @@ class SkiAreaWeatherService {
         val endTime = LocalTime.of(18, 1)
 
         return time.isAfter(startTime) && time.isBefore(endTime)
-    }
-
-    private fun roundDouble(value: Double): Double {
-        return BigDecimal(value)
-            .setScale(2, RoundingMode.HALF_UP)
-            .toDouble()
     }
 }
