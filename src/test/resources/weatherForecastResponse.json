@@ -15,7 +15,11 @@
       {
         "date": "2025-01-11",
         "day": {
-          "totalsnow_cm": 0.4
+          "totalsnow_cm": 0.4,
+          "condition": {
+            "text": "Sunny",
+            "icon": "//icon"
+          }
         },
         "hour": [
           {
