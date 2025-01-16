@@ -1,6 +1,7 @@
 package skiweather.service
 
 import skiweather.model.weather.SkiAreaWeather
+import skiweather.utils.CalculationUtils.Companion.roundDouble
 import kotlin.math.round
 
 class ScoreService {
@@ -18,6 +19,10 @@ class ScoreService {
         score += calculateUv(weather.uv)
 
         return score
+    }
+
+    fun calculateStars(score: Double, maxScore: Double): Double {
+        return roundDouble((score / maxScore) * 5)
     }
 
     private fun calculateTemperature(temperature: Double): Double {

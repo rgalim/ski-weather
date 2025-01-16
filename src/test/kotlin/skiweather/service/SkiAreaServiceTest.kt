@@ -38,11 +38,13 @@ class SkiAreaServiceTest {
                 .thenReturn(SKI_AREA_WEATHER_KITZBUHEL)
             `when`(scoreService.scoreSkiArea(SKI_AREA_WEATHER_SOLDEN)).thenReturn(70.0)
             `when`(scoreService.scoreSkiArea(SKI_AREA_WEATHER_KITZBUHEL)).thenReturn(50.0)
+            `when`(scoreService.calculateStars(70.0, 150.0)).thenReturn(2.33)
+            `when`(scoreService.calculateStars(50.0, 150.0)).thenReturn(1.67)
 
             val actualSkiAreas: List<SkiArea> = skiAreaService.getSkiAreas()
 
-            val skiAreaSolden = SkiArea(SKI_AREA_WEATHER_SOLDEN, 70.0, 0.0)
-            val skiAreaKitzbuhel = SkiArea(SKI_AREA_WEATHER_KITZBUHEL, 50.0, 0.0)
+            val skiAreaSolden = SkiArea(SKI_AREA_WEATHER_SOLDEN, 70.0, 2.33)
+            val skiAreaKitzbuhel = SkiArea(SKI_AREA_WEATHER_KITZBUHEL, 50.0, 1.67)
 
             assertEquals(skiAreaSolden, actualSkiAreas[0])
             assertEquals(skiAreaKitzbuhel, actualSkiAreas[1])

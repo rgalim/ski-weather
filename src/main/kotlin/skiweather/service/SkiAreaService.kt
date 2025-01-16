@@ -4,6 +4,7 @@ import skiweather.client.WeatherApiClient
 import skiweather.model.weather.SkiArea
 import skiweather.model.weather.SkiAreaWeather
 import skiweather.model.weather.WeatherHistory
+import skiweather.utils.Constants.MAX_SCORE
 import skiweather.utils.logger
 
 class SkiAreaService(
@@ -43,10 +44,7 @@ class SkiAreaService(
     }
 
     private fun createSkiArea(skiAreaWeather: SkiAreaWeather): SkiArea {
-        return SkiArea(
-            skiAreaWeather,
-            scoreService.scoreSkiArea(skiAreaWeather),
-            0.0 // TODO: calculate stars
-        )
+        val score = scoreService.scoreSkiArea(skiAreaWeather)
+        return SkiArea(skiAreaWeather, score, scoreService.calculateStars(score, MAX_SCORE))
     }
 }
