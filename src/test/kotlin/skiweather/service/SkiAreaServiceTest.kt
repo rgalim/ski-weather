@@ -6,14 +6,18 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.assertThrows
 import org.mockito.Mockito.*
+import skiweather.TestConstants.DAY_FORECAST_KITZBUHEL
+import skiweather.TestConstants.DAY_FORECAST_SOLDEN
 import skiweather.TestConstants.HISTORY_MAP
 import skiweather.TestConstants.LOCATIONS
 import skiweather.TestConstants.SKI_AREA_WEATHER_KITZBUHEL
 import skiweather.TestConstants.SKI_AREA_WEATHER_SOLDEN
+import skiweather.TestConstants.WEATHER_CONDITION
 import skiweather.TestConstants.WEATHER_FORECAST_KITZBUHEL
 import skiweather.TestConstants.WEATHER_FORECAST_SOLDEN
 import skiweather.TestConstants.WEATHER_HISTORY
 import skiweather.exception.WeatherApiException
+import skiweather.model.SkiArea
 import skiweather.model.weather.*
 
 class SkiAreaServiceTest {
@@ -32,9 +36,9 @@ class SkiAreaServiceTest {
             `when`(weatherService.getWeatherForecast(LOCATIONS))
                 .thenReturn(listOf(WEATHER_FORECAST_SOLDEN, WEATHER_FORECAST_KITZBUHEL))
             `when`(skiAreaWeatherService.convertToHistoryMap(WEATHER_HISTORY)).thenReturn(HISTORY_MAP)
-            `when`(skiAreaWeatherService.convertToSkiAreaWeather(WEATHER_FORECAST_SOLDEN, 0.2))
+            `when`(skiAreaWeatherService.getSkiAreaWeather(DAY_FORECAST_SOLDEN, 0.2))
                 .thenReturn(SKI_AREA_WEATHER_SOLDEN)
-            `when`(skiAreaWeatherService.convertToSkiAreaWeather(WEATHER_FORECAST_KITZBUHEL, 4.7))
+            `when`(skiAreaWeatherService.getSkiAreaWeather(DAY_FORECAST_KITZBUHEL, 4.7))
                 .thenReturn(SKI_AREA_WEATHER_KITZBUHEL)
             `when`(scoreService.scoreSkiArea(SKI_AREA_WEATHER_SOLDEN)).thenReturn(70.0)
             `when`(scoreService.scoreSkiArea(SKI_AREA_WEATHER_KITZBUHEL)).thenReturn(50.0)
@@ -43,8 +47,9 @@ class SkiAreaServiceTest {
 
             val actualSkiAreas: List<SkiArea> = skiAreaService.getSkiAreas()
 
-            val skiAreaSolden = SkiArea(SKI_AREA_WEATHER_SOLDEN, 70.0, 2.33)
-            val skiAreaKitzbuhel = SkiArea(SKI_AREA_WEATHER_KITZBUHEL, 50.0, 1.67)
+
+            val skiAreaSolden = SkiArea("Sölden", SKI_AREA_WEATHER_SOLDEN, WEATHER_CONDITION, 70.0, 2.33)
+            val skiAreaKitzbuhel = SkiArea("Kitzbühel", SKI_AREA_WEATHER_KITZBUHEL, WEATHER_CONDITION, 50.0, 1.67)
 
             assertEquals(skiAreaSolden, actualSkiAreas[0])
             assertEquals(skiAreaKitzbuhel, actualSkiAreas[1])
@@ -94,18 +99,39 @@ class SkiAreaServiceTest {
         }
 
     @Test
+    fun `should throw exception when empty day forecast list`() =
+        runBlocking {
+            val weatherForecast = WeatherForecast(
+                WeatherLocation("Sölden", "Tirol", "Österreich"),
+                ForecastList(listOf())
+            )
+
+            `when`(locationService.getLocations()).thenReturn(LOCATIONS)
+            `when`(weatherService.getWeatherHistory(LOCATIONS)).thenReturn(WEATHER_HISTORY)
+            `when`(weatherService.getWeatherForecast(LOCATIONS))
+                .thenReturn(listOf(weatherForecast))
+            `when`(skiAreaWeatherService.convertToHistoryMap(WEATHER_HISTORY)).thenReturn(HISTORY_MAP)
+
+            val exception = assertThrows<IllegalArgumentException> { skiAreaService.getSkiAreas() }
+
+            assertEquals("Daily forecast must not be empty", exception.message)
+
+            verifyNoInteractions(scoreService)
+        }
+
+    @Test
     fun `should throw exception when failed to convert ski area weather`() =
         runBlocking {
             `when`(locationService.getLocations()).thenReturn(LOCATIONS)
             `when`(weatherService.getWeatherHistory(LOCATIONS)).thenReturn(WEATHER_HISTORY)
             `when`(skiAreaWeatherService.convertToHistoryMap(WEATHER_HISTORY)).thenReturn(HISTORY_MAP)
             `when`(weatherService.getWeatherForecast(LOCATIONS)).thenReturn(listOf(WEATHER_FORECAST_SOLDEN))
-            `when`(skiAreaWeatherService.convertToSkiAreaWeather(WEATHER_FORECAST_SOLDEN, 0.2))
-                .thenThrow(IllegalArgumentException("Daily forecast must not be empty"))
+            `when`(skiAreaWeatherService.getSkiAreaWeather(DAY_FORECAST_SOLDEN, 0.2))
+                .thenThrow(IllegalArgumentException("Hour data list must not be empty"))
 
             val exception = assertThrows<IllegalArgumentException> { skiAreaService.getSkiAreas() }
 
-            assertEquals("Daily forecast must not be empty", exception.message)
+            assertEquals("Hour data list must not be empty", exception.message)
 
             verifyNoInteractions(scoreService)
         }
@@ -117,7 +143,7 @@ class SkiAreaServiceTest {
             `when`(weatherService.getWeatherHistory(LOCATIONS)).thenReturn(WEATHER_HISTORY)
             `when`(skiAreaWeatherService.convertToHistoryMap(WEATHER_HISTORY)).thenReturn(HISTORY_MAP)
             `when`(weatherService.getWeatherForecast(LOCATIONS)).thenReturn(listOf(WEATHER_FORECAST_SOLDEN))
-            `when`(skiAreaWeatherService.convertToSkiAreaWeather(WEATHER_FORECAST_SOLDEN, 0.2))
+            `when`(skiAreaWeatherService.getSkiAreaWeather(DAY_FORECAST_SOLDEN, 0.2))
                 .thenReturn(SKI_AREA_WEATHER_SOLDEN)
             `when`(scoreService.scoreSkiArea(SKI_AREA_WEATHER_SOLDEN))
                 .thenThrow(IllegalArgumentException("Something went wrong"))

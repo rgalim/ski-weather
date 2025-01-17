@@ -1,7 +1,6 @@
 package skiweather.model.weather
 
 data class SkiAreaWeather(
-    val location: String,
     val temperature: Double,
     val dailySnowfall: Double,
     val weeklySnowfall: Double,

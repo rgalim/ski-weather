@@ -10,32 +10,29 @@ object TestConstants {
             "apiKey"
         )
     val LOCATIONS = listOf("Sölden", "Kitzbühel")
+    val WEATHER_CONDITION = WeatherCondition("Sunny", "//icon")
+    val DAY_FORECAST_SOLDEN = DayForecast(
+        "2025-01-11",
+        DayData(0.07, WEATHER_CONDITION),
+        listOf(
+            HourData("2025-01-11 00:00", -11.9, 5.8, 95, 71, 5.0, 0.0),
+            HourData("2025-01-11 01:00", -11.7, 6.1, 95, 71, 7.0, 0.0)
+        )
+    )
+    val DAY_FORECAST_KITZBUHEL = DayForecast(
+        "2025-01-11",
+        DayData(0.04, WEATHER_CONDITION),
+        listOf(
+            HourData("2025-01-11 00:00", -11.3, 5.8, 81, 3, 10.0, 0.0),
+            HourData("2025-01-11 01:00", -12.4, 6.5, 84, 2, 10.0, 0.0)
+        ))
     val WEATHER_FORECAST_SOLDEN = WeatherForecast(
         WeatherLocation("Sölden", "Tirol", "Österreich"),
-        ForecastList(
-            listOf(
-                DayForecast(
-                    "2025-01-11",
-                    TotalDayData(0.07),
-                    listOf(
-                        HourData("2025-01-11 00:00", -11.9, 5.8, 95, 71, 5.0, 0.0),
-                        HourData("2025-01-11 01:00", -11.7, 6.1, 95, 71, 7.0, 0.0)
-                    )
-                )
-            )
-        )
+        ForecastList(listOf(DAY_FORECAST_SOLDEN))
     )
     val WEATHER_FORECAST_KITZBUHEL = WeatherForecast(
         WeatherLocation("Kitzbühel", "Tirol", "Österreich"),
-        ForecastList(listOf(
-            DayForecast(
-                "2025-01-11",
-                TotalDayData(0.04),
-                listOf(
-                    HourData("2025-01-11 00:00", -11.3, 5.8, 81, 3, 10.0, 0.0),
-                    HourData("2025-01-11 01:00", -12.4, 6.5, 84, 2, 10.0, 0.0)
-                ))
-        ))
+        ForecastList(listOf(DAY_FORECAST_KITZBUHEL))
     )
     val WEATHER_FORECAST_WITH_HISTORY_SOLDEN = WeatherForecast(
         WeatherLocation("Sölden", "Tirol", "Österreich"),
@@ -43,12 +40,12 @@ object TestConstants {
             listOf(
                 DayForecast(
                     "2025-01-10",
-                    TotalDayData(0.07),
+                    DayData(0.07, WEATHER_CONDITION),
                     listOf()
                 ),
                 DayForecast(
                     "2025-01-11",
-                    TotalDayData(0.13),
+                    DayData(0.13, WEATHER_CONDITION),
                     listOf()
                 )
             )
@@ -60,12 +57,12 @@ object TestConstants {
             listOf(
                 DayForecast(
                     "2025-01-10",
-                    TotalDayData(1.2),
+                    DayData(1.2, WEATHER_CONDITION),
                     listOf()
                 ),
                 DayForecast(
                     "2025-01-11",
-                    TotalDayData(3.5),
+                    DayData(3.5, WEATHER_CONDITION),
                     listOf()
                 )
             )
@@ -81,7 +78,6 @@ object TestConstants {
     )
     val HISTORY_MAP = mapOf(Pair("Sölden", 0.2), Pair("Kitzbühel", 4.7))
     val SKI_AREA_WEATHER_SOLDEN = SkiAreaWeather(
-        "Sölden",
         -13.8,
         0.4,
         0.2,
@@ -92,7 +88,6 @@ object TestConstants {
         0.57
     )
     val SKI_AREA_WEATHER_KITZBUHEL = SkiAreaWeather(
-        "Kitzbühel",
         -13.8,
         0.4,
         4.7,

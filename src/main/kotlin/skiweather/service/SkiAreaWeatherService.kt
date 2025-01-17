@@ -8,12 +8,8 @@ import java.time.LocalTime
 
 class SkiAreaWeatherService {
 
-    fun convertToSkiAreaWeather(weather: WeatherForecast, totalWeeklySnowCm: Double): SkiAreaWeather {
-        val dailyForecast: List<DayForecast> = weather.forecast.forecastday
-        require(dailyForecast.isNotEmpty()) { "Daily forecast must not be empty" }
-
-        val currentDayForecast: DayForecast = dailyForecast[0]
-        val hourDataList: List<HourData> = currentDayForecast.hour
+    fun getSkiAreaWeather(dayForecast: DayForecast, totalWeeklySnowCm: Double): SkiAreaWeather {
+        val hourDataList: List<HourData> = dayForecast.hour
         require(hourDataList.isNotEmpty()) { "Hour data list must not be empty" }
 
         val dayTimeHourData = hourDataList.filter { data -> isDaySkiTime(data.time) }
@@ -27,9 +23,8 @@ class SkiAreaWeatherService {
         val avgUv = roundDouble(dayTimeHourData.sumOf { it.uv } / dayTimeHoursSize)
 
         return SkiAreaWeather(
-            weather.location.name,
             avgTemp,
-            currentDayForecast.day.totalsnowCm,
+            dayForecast.day.totalsnowCm,
             roundDouble(totalWeeklySnowCm),
             avgWind,
             avgVisibility,

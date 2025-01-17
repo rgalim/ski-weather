@@ -1,5 +1,8 @@
 # Changelog
 
+## [0.2.2] - 2025-01-16
+- Update ski area model
+
 ## [0.2.1] - 2025-01-16
 - Add stars calculation to ski area
 

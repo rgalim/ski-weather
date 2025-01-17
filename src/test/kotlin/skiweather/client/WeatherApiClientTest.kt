@@ -40,7 +40,7 @@ class WeatherApiClientTest {
                 val dayForecast = actualWeatherForecast.forecast.forecastday.get(0)
 
                 val expectedLocation = WeatherLocation("Sölden", "Tirol", "Österreich")
-                val expectedDayData = TotalDayData(0.4)
+                val expectedDayData = DayData(0.4, WeatherCondition("Sunny", "//icon"))
 
                 assertEquals(expectedLocation, actualLocation)
                 assertEquals(expectedDayData, dayForecast.day)
@@ -91,7 +91,7 @@ class WeatherApiClientTest {
                 val actualWeatherHistory = weatherApiClient.fetchWeatherHistory("Sölden")
 
                 val expectedLocation = WeatherLocation("Sölden", "Tirol", "Österreich")
-                val expectedDayData = TotalDayData(1.32)
+                val expectedDayData = DayData(1.32, WeatherCondition("Sunny", "//icon"))
 
                 assertEquals(expectedLocation, actualWeatherHistory.location)
                 assertEquals(7, actualWeatherHistory.forecast.forecastday.size)
