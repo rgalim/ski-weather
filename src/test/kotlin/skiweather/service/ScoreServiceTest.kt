@@ -14,7 +14,6 @@ class ScoreServiceTest {
         @Test
         fun `should calculate score of the ski area weather`() {
             val skiAreaWeather = SkiAreaWeather(
-                "Sölden",
                 -13.8,
                 0.4,
                 5.6,
