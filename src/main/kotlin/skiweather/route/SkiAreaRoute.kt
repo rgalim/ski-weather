@@ -6,7 +6,7 @@ import skiweather.service.SkiAreaService
 
 fun Routing.skiAreas(skiAreaService: SkiAreaService) {
 
-    get("/ski-area") {
+    get("/api/v1/ski-area") {
         val rankedSkiAreas = skiAreaService.getSkiAreas()
 
         call.respond(rankedSkiAreas)

@@ -1,5 +1,8 @@
 # Changelog
 
+## [0.2.3] - 2025-01-20
+- add status pages handling
+
 ## [0.2.2] - 2025-01-16
 - Update ski area model
 
