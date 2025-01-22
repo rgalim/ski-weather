@@ -1,5 +1,8 @@
 # Changelog
 
+## [0.3.0] - 2025-01-20
+- add alerts
+
 ## [0.2.3] - 2025-01-20
 - add status pages handling
 
