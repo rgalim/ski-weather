@@ -241,5 +241,54 @@
         ]
       }
     ]
+  },
+  "alerts": {
+    "alert": [
+      {
+        "headline": "(Alert) Amtliche WARNUNG vor FROST",
+        "msgtype": "Alert",
+        "severity": "Minor",
+        "urgency": "Immediate",
+        "areas": "",
+        "category": "Met",
+        "certainty": "Likely",
+        "event": "FROST",
+        "note": "",
+        "effective": "2025-01-21T12:44:00+01:00",
+        "expires": "2025-01-22T11:00:00+01:00",
+        "desc": "Es tritt mäßiger Frost zwischen -3 °C und -6 °C auf. In Tal- und Muldenlagen sinken die Temperaturen auf Werte bis -8 °C.",
+        "instruction": "Hinweis auf mögliche Frostschäden. \nHandlungsempfehlungen: \nggf. Frostschutzmaßnahmen ergreifen"
+      },
+      {
+        "headline": "(Alert) Official WARNING of FROST",
+        "msgtype": "Alert",
+        "severity": "Minor",
+        "urgency": "Immediate",
+        "areas": "",
+        "category": "Met",
+        "certainty": "Likely",
+        "event": "frost",
+        "note": "",
+        "effective": "2025-01-21T12:44:00+01:00",
+        "expires": "2025-01-22T11:00:00+01:00",
+        "desc": "There is a risk of frost (level 1 of 2).\nMinimum temperature: -3 - -6 °C; local minimum: in valleys and dips > -8 °C",
+        "instruction": "Hazard(s) to expect: possible frost damage. \nRecommendations for what to do: \nIf necessary, take precautions against frost."
+      },
+      {
+        "headline": "(Alert) Official WARNING of FROST",
+        "msgtype": "Alert",
+        "severity": "Minor",
+        "urgency": "Immediate",
+        "areas": "",
+        "category": "Met",
+        "certainty": "Likely",
+        "event": "frost",
+        "note": "",
+        "effective": "2025-01-21T12:44:00+01:00",
+        "expires": "2025-01-22T11:00:00+01:00",
+        "desc": "There is a risk of frost (level 1 of 2).\nMinimum temperature: -3 - -6 °C; local minimum: in valleys and dips > -8 °C",
+        "instruction": "Hazard(s) to expect: possible frost damage. \nRecommendations for what to do: \nIf necessary, take precautions against frost."
+      }
+    ]
   }
 }
