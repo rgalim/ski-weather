@@ -5,8 +5,11 @@ import io.ktor.client.call.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
+import io.ktor.util.reflect.*
 import skiweather.config.AppConfig
+import skiweather.exception.WeatherApiException
 import skiweather.model.weather.WeatherForecast
+import skiweather.model.weather.WeatherForecastHistory
 import skiweather.utils.Constants.DATE_FORMATTER
 import skiweather.utils.Constants.FORECAST_URL
 import skiweather.utils.Constants.HISTORY_URL
@@ -26,18 +29,19 @@ class WeatherApiClient(
             parameter("key", config.weatherApiKey)
             parameter("q", location)
             parameter("days", 1)
+            parameter("alerts", "yes")
         }
 
         when (response.status) {
             HttpStatusCode.OK -> {
                 logger.info("Successfully fetched weather forecast for location: $location")
-                return response.body<WeatherForecast>()
+                return parseResponseBody(response, typeInfo<WeatherForecast>())
             }
             else -> ErrorHandler.handleUnexpectedError("location $location", response.status.value, response.bodyAsText())
         }
     }
 
-    suspend fun fetchWeatherHistory(location: String): WeatherForecast {
+    suspend fun fetchWeatherHistory(location: String): WeatherForecastHistory {
         val now: LocalDate = LocalDate.now()
         /*
             The history is collected starting from one day before now
@@ -57,9 +61,20 @@ class WeatherApiClient(
         when (response.status) {
             HttpStatusCode.OK -> {
                 logger.info("Successfully fetched weather history for location: $location")
-                return response.body<WeatherForecast>()
+                return parseResponseBody(response, typeInfo<WeatherForecastHistory>())
             }
             else -> ErrorHandler.handleUnexpectedError("location $location", response.status.value, response.bodyAsText())
+        }
+    }
+
+    private suspend fun <T> parseResponseBody(response: HttpResponse, typeInfo: TypeInfo): T {
+        try {
+            return response.body(typeInfo)
+
+        } catch (e: Exception) {
+            val errorMessage = "Failed to parse response body to $typeInfo"
+            logger.error("$errorMessage: {}", e.message)
+            throw WeatherApiException(errorMessage)
         }
     }
 }

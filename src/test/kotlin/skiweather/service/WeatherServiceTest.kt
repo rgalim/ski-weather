@@ -9,8 +9,8 @@ import org.mockito.Mockito.*
 import skiweather.TestConstants.LOCATIONS
 import skiweather.TestConstants.WEATHER_FORECAST_KITZBUHEL
 import skiweather.TestConstants.WEATHER_FORECAST_SOLDEN
-import skiweather.TestConstants.WEATHER_FORECAST_WITGH_HISTORY_KITZBUHEL
-import skiweather.TestConstants.WEATHER_FORECAST_WITH_HISTORY_SOLDEN
+import skiweather.TestConstants.WEATHER_FORECAST_HISTORY_KITZBUHEL
+import skiweather.TestConstants.WEATHER_FORECAST_HISTORY_SOLDEN
 import skiweather.TestConstants.WEATHER_HISTORY
 import skiweather.client.WeatherApiClient
 import skiweather.exception.WeatherApiException
@@ -54,9 +54,9 @@ class WeatherServiceTest {
         @Test
         fun `should return list of weather history when successful response from weather api`() =
             runBlocking {
-                `when`(weatherApiClient.fetchWeatherHistory("Sölden")).thenReturn(WEATHER_FORECAST_WITH_HISTORY_SOLDEN)
+                `when`(weatherApiClient.fetchWeatherHistory("Sölden")).thenReturn(WEATHER_FORECAST_HISTORY_SOLDEN)
                 `when`(weatherApiClient.fetchWeatherHistory("Kitzbühel"))
-                    .thenReturn(WEATHER_FORECAST_WITGH_HISTORY_KITZBUHEL)
+                    .thenReturn(WEATHER_FORECAST_HISTORY_KITZBUHEL)
 
                 val actualHistory = weatherService.getWeatherHistory(LOCATIONS)
 
@@ -66,7 +66,7 @@ class WeatherServiceTest {
         @Test
         fun `should throw exception when error response from weather api`() =
             runBlocking {
-                `when`(weatherApiClient.fetchWeatherHistory("Sölden")).thenReturn(WEATHER_FORECAST_WITH_HISTORY_SOLDEN)
+                `when`(weatherApiClient.fetchWeatherHistory("Sölden")).thenReturn(WEATHER_FORECAST_HISTORY_SOLDEN)
                 `when`(weatherApiClient.fetchWeatherHistory("Kitzbühel"))
                     .thenThrow(WeatherApiException("Something went wrong"))
 

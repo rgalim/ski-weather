@@ -36,8 +36,10 @@ class WeatherApiClientTest {
                 val weatherApiClient = WeatherApiClient(MOCKED_APP_CONFIG, httpClient)
 
                 val actualWeatherForecast = weatherApiClient.fetchWeatherForecast("Sölden")
+
                 val actualLocation = actualWeatherForecast.location
                 val dayForecast = actualWeatherForecast.forecast.forecastday.get(0)
+                val alertList = actualWeatherForecast.alerts.alert
 
                 val expectedLocation = WeatherLocation("Sölden", "Tirol", "Österreich")
                 val expectedDayData = DayData(0.4, WeatherCondition("Sunny", "//icon"))
@@ -46,10 +48,11 @@ class WeatherApiClientTest {
                 assertEquals(expectedDayData, dayForecast.day)
                 assertEquals("2025-01-11", dayForecast.date)
                 assertEquals(24, dayForecast.hour.size)
+                assertEquals(3, alertList.size)
             }
 
         @Test
-        fun `should return error when failed response from weather api`() =
+        fun `should throw exception when failed response from weather api`() =
             runBlocking {
                 val mockEngine =
                     MockEngine { _ ->
@@ -67,13 +70,33 @@ class WeatherApiClientTest {
 
                 assertEquals("Unexpected status 403 while fetching weather for location Sölden", exception.message)
             }
+
+        @Test
+        fun `should throw exception when failed to convert response body`() =
+            runBlocking {
+                val mockEngine =
+                    MockEngine { _ ->
+                        respond(
+                            content = "IncorrectBody",
+                            status = HttpStatusCode.OK,
+                            headers = headersOf(HttpHeaders.ContentType, ContentType.Application.Json.toString()),
+                        )
+                    }
+
+                val httpClient = createMockClient(mockEngine)
+                val weatherApiClient = WeatherApiClient(MOCKED_APP_CONFIG, httpClient)
+
+                val exception = assertThrows<WeatherApiException> { weatherApiClient.fetchWeatherForecast("Sölden") }
+
+                assertEquals("Failed to parse response body to TypeInfo(skiweather.model.weather.WeatherForecast)", exception.message)
+            }
     }
 
     @Nested
     inner class GetWeatherHistory {
 
         @Test
-        fun `should return weather object when successful history response from weather api`() =
+        fun `should return weather forecast history object when successful history response from weather api`() =
             runBlocking {
                 val weatherHistoryResponse = readJson("weatherHistoryResponse.json")
                 val mockEngine =
@@ -88,7 +111,7 @@ class WeatherApiClientTest {
                 val httpClient = createMockClient(mockEngine)
                 val weatherApiClient = WeatherApiClient(MOCKED_APP_CONFIG, httpClient)
 
-                val actualWeatherHistory = weatherApiClient.fetchWeatherHistory("Sölden")
+                val actualWeatherHistory: WeatherForecastHistory = weatherApiClient.fetchWeatherHistory("Sölden")
 
                 val expectedLocation = WeatherLocation("Sölden", "Tirol", "Österreich")
                 val expectedDayData = DayData(1.32, WeatherCondition("Sunny", "//icon"))
@@ -99,7 +122,7 @@ class WeatherApiClientTest {
             }
 
         @Test
-        fun `should return error when failed history response from weather api`() =
+        fun `should throw exception when failed history response from weather api`() =
             runBlocking {
                 val mockEngine =
                     MockEngine { _ ->
@@ -116,6 +139,26 @@ class WeatherApiClientTest {
                 val exception = assertThrows<WeatherApiException> { weatherApiClient.fetchWeatherHistory("Sölden") }
 
                 assertEquals("Unexpected status 403 while fetching weather for location Sölden", exception.message)
+            }
+
+        @Test
+        fun `should throw exception when when failed to convert response body`() =
+            runBlocking {
+                val mockEngine =
+                    MockEngine { _ ->
+                        respond(
+                            content = "IncorrectBody",
+                            status = HttpStatusCode.OK,
+                            headers = headersOf(HttpHeaders.ContentType, ContentType.Application.Json.toString()),
+                        )
+                    }
+
+                val httpClient = createMockClient(mockEngine)
+                val weatherApiClient = WeatherApiClient(MOCKED_APP_CONFIG, httpClient)
+
+                val exception = assertThrows<WeatherApiException> { weatherApiClient.fetchWeatherHistory("Sölden") }
+
+                assertEquals("Failed to parse response body to TypeInfo(skiweather.model.weather.WeatherForecastHistory)", exception.message)
             }
     }
 }
