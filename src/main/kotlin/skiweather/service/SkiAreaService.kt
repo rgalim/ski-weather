@@ -2,6 +2,8 @@ package skiweather.service
 
 import skiweather.client.WeatherApiClient
 import skiweather.model.SkiArea
+import skiweather.model.SkiAreasResponse
+import skiweather.model.alert.Alert
 import skiweather.model.weather.*
 import skiweather.utils.Constants.MAX_SCORE
 import skiweather.utils.logger
@@ -10,22 +12,28 @@ class SkiAreaService(
     private val locationService: LocationService,
     private val weatherService: WeatherService,
     private val skiAreaWeatherService: SkiAreaWeatherService,
-    private val scoreService: ScoreService
+    private val scoreService: ScoreService,
+    private val alertService: AlertService
 ) {
 
     private val logger = logger<WeatherApiClient>()
 
-    suspend fun getSkiAreas(): List<SkiArea> {
+    suspend fun getSkiAreas(): SkiAreasResponse {
         val locations: List<String> = locationService.getLocations()
         require(locations.isNotEmpty()) { "The list of locations must not be empty" }
 
         val weatherHistoryList: List<WeatherHistory> = weatherService.getWeatherHistory(locations)
         val history: Map<String, Double> = skiAreaWeatherService.convertToHistoryMap(weatherHistoryList)
 
-        return weatherService.getWeatherForecast(locations).asSequence()
+        val weatherForecastList: List<WeatherForecast> = weatherService.getWeatherForecast(locations)
+        val skiAreas: List<SkiArea> = weatherForecastList.asSequence()
             .map { weatherForecast -> createSkiArea(weatherForecast, history)}
             .sortedByDescending { skiArea -> skiArea.score }
             .toList()
+
+        val alerts: List<Alert> = alertService.getAlerts(weatherForecastList)
+
+        return SkiAreasResponse(skiAreas, alerts)
     }
 
     private fun getTotalWeeklySnow(history: Map<String, Double>, locationName: String): Double {

@@ -20,9 +20,11 @@ val appModule = module {
 
     single<SkiAreaWeatherService> { SkiAreaWeatherService() }
 
+    single<AlertService> { AlertService() }
+
     single<WeatherApiClient> { WeatherApiClient(get(), get()) }
 
     single<WeatherService> { WeatherService(get()) }
 
-    single<SkiAreaService> { SkiAreaService(get(), get(), get(), get()) }
+    single<SkiAreaService> { SkiAreaService(get(), get(), get(), get(), get()) }
 }

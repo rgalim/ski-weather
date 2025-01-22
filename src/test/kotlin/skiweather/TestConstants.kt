@@ -1,6 +1,8 @@
 package skiweather
 
 import skiweather.config.AppConfig
+import skiweather.model.alert.Alert
+import skiweather.model.alert.AlertList
 import skiweather.model.weather.*
 
 object TestConstants {
@@ -28,13 +30,15 @@ object TestConstants {
         ))
     val WEATHER_FORECAST_SOLDEN = WeatherForecast(
         WeatherLocation("Sölden", "Tirol", "Österreich"),
-        ForecastList(listOf(DAY_FORECAST_SOLDEN))
+        ForecastList(listOf(DAY_FORECAST_SOLDEN)),
+        AlertList(listOf())
     )
     val WEATHER_FORECAST_KITZBUHEL = WeatherForecast(
         WeatherLocation("Kitzbühel", "Tirol", "Österreich"),
-        ForecastList(listOf(DAY_FORECAST_KITZBUHEL))
+        ForecastList(listOf(DAY_FORECAST_KITZBUHEL)),
+        AlertList(listOf())
     )
-    val WEATHER_FORECAST_WITH_HISTORY_SOLDEN = WeatherForecast(
+    val WEATHER_FORECAST_HISTORY_SOLDEN = WeatherForecastHistory(
         WeatherLocation("Sölden", "Tirol", "Österreich"),
         ForecastList(
             listOf(
@@ -51,7 +55,7 @@ object TestConstants {
             )
         )
     )
-    val WEATHER_FORECAST_WITGH_HISTORY_KITZBUHEL = WeatherForecast(
+    val WEATHER_FORECAST_HISTORY_KITZBUHEL = WeatherForecastHistory(
         WeatherLocation("Kitzbühel", "Tirol", "Österreich"),
         ForecastList(
             listOf(
@@ -67,6 +71,28 @@ object TestConstants {
                 )
             )
         )
+    )
+    val ALERT_SOLDEN = Alert(
+        "(Alert) Official WARNING of FROST",
+        "Minor",
+        "",
+        "Likely",
+        "frost",
+        "2025-01-22T12:55:00+01:00",
+        "2025-01-23T12:00:00+01:00",
+        "Description1",
+        "Instruction1"
+    )
+    val ALERT_KITZBUHEL = Alert(
+        "(Alert) Official WARNING of ICY SURFACES",
+        "Minor",
+        "",
+        "Likely",
+        "icy surfaces",
+        "2025-01-22T12:55:00+01:00",
+        "2025-01-23T12:00:00+01:00",
+        "Description2",
+        "Instruction2"
     )
     val WEATHER_HISTORY = listOf(
         WeatherHistory(

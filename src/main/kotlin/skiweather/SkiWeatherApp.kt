@@ -18,6 +18,7 @@ import skiweather.di.appModule
 import skiweather.exception.WeatherApiException
 import skiweather.route.skiAreas
 import skiweather.service.SkiAreaService
+import skiweather.utils.logger
 
 fun main() {
     embeddedServer(Netty, port = 8000) {
@@ -26,6 +27,8 @@ fun main() {
 }
 
 fun Application.module() {
+    val logger = logger<Application>()
+
     install(Koin) {
         modules(appModule)
     }
@@ -41,7 +44,8 @@ fun Application.module() {
         exception<BadRequestException> { call, cause ->
             call.respond(HttpStatusCode.BadRequest, cause.message ?: "Invalid parameters")
         }
-        exception<Throwable> { call, _ ->
+        exception<Throwable> { call, cause ->
+            logger.error("Unexpected error: {}", cause.message)
             call.respond(HttpStatusCode.InternalServerError, "Unexpected error. Something went wrong")
         }
     }
