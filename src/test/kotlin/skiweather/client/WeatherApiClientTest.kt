@@ -17,7 +17,7 @@ import kotlin.test.assertEquals
 class WeatherApiClientTest {
 
     @Nested
-    inner class GetWeatherForecast {
+    inner class FetchWeatherForecast {
 
         @Test
         fun `should return weather object when successful response from weather api`() =
@@ -35,7 +35,7 @@ class WeatherApiClientTest {
                 val httpClient = createMockClient(mockEngine)
                 val weatherApiClient = WeatherApiClient(MOCKED_APP_CONFIG, httpClient)
 
-                val actualWeatherForecast = weatherApiClient.fetchWeatherForecast("Sölden")
+                val actualWeatherForecast = weatherApiClient.fetchWeatherForecast("Sölden", 1)
 
                 val actualLocation = actualWeatherForecast.location
                 val dayForecast = actualWeatherForecast.forecast.forecastday.get(0)
@@ -66,7 +66,7 @@ class WeatherApiClientTest {
                 val httpClient = createMockClient(mockEngine)
                 val weatherApiClient = WeatherApiClient(MOCKED_APP_CONFIG, httpClient)
 
-                val exception = assertThrows<WeatherApiException> { weatherApiClient.fetchWeatherForecast("Sölden") }
+                val exception = assertThrows<WeatherApiException> { weatherApiClient.fetchWeatherForecast("Sölden", 1) }
 
                 assertEquals("Unexpected status 403 while fetching weather for location Sölden", exception.message)
             }
@@ -86,14 +86,14 @@ class WeatherApiClientTest {
                 val httpClient = createMockClient(mockEngine)
                 val weatherApiClient = WeatherApiClient(MOCKED_APP_CONFIG, httpClient)
 
-                val exception = assertThrows<WeatherApiException> { weatherApiClient.fetchWeatherForecast("Sölden") }
+                val exception = assertThrows<WeatherApiException> { weatherApiClient.fetchWeatherForecast("Sölden",1) }
 
                 assertEquals("Failed to parse response body to TypeInfo(skiweather.model.weather.WeatherForecast)", exception.message)
             }
     }
 
     @Nested
-    inner class GetWeatherHistory {
+    inner class FetchWeatherHistory {
 
         @Test
         fun `should return weather forecast history object when successful history response from weather api`() =

@@ -23,12 +23,12 @@ class WeatherApiClient(
 ) {
     private val logger = logger<WeatherApiClient>()
 
-    suspend fun fetchWeatherForecast(location: String): WeatherForecast {
+    suspend fun fetchWeatherForecast(location: String, days: Int): WeatherForecast {
         val response: HttpResponse = httpClient.get {
             url(config.weatherApiUrl + FORECAST_URL)
             parameter("key", config.weatherApiKey)
             parameter("q", location)
-            parameter("days", 1)
+            parameter("days", days)
             parameter("alerts", "yes")
         }
 
