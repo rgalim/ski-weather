@@ -11,22 +11,23 @@ object TestConstants {
             "http://weather-api",
             "apiKey"
         )
+    val LOCATION = "Sölden"
     val LOCATIONS = listOf("Sölden", "Kitzbühel")
     val WEATHER_CONDITION = WeatherCondition("Sunny", "//icon")
     val DAY_FORECAST_SOLDEN = DayForecast(
         "2025-01-11",
         DayData(0.07, WEATHER_CONDITION),
         listOf(
-            HourData("2025-01-11 00:00", -11.9, 5.8, 95, 71, 5.0, 0.0),
-            HourData("2025-01-11 01:00", -11.7, 6.1, 95, 71, 7.0, 0.0)
+            HourData("2025-01-11 00:00", -11.9, 5.8, 95, 71, 5.0, 0.0, 0.0),
+            HourData("2025-01-11 01:00", -11.7, 6.1, 95, 71, 7.0, 0.0, 0.0)
         )
     )
     val DAY_FORECAST_KITZBUHEL = DayForecast(
         "2025-01-11",
         DayData(0.04, WEATHER_CONDITION),
         listOf(
-            HourData("2025-01-11 00:00", -11.3, 5.8, 81, 3, 10.0, 0.0),
-            HourData("2025-01-11 01:00", -12.4, 6.5, 84, 2, 10.0, 0.0)
+            HourData("2025-01-11 00:00", -11.3, 5.8, 81, 3, 10.0, 0.0, 0.0),
+            HourData("2025-01-11 01:00", -12.4, 6.5, 84, 2, 10.0, 0.0, 0.0)
         ))
     val WEATHER_FORECAST_SOLDEN = WeatherForecast(
         WeatherLocation("Sölden", "Tirol", "Österreich"),

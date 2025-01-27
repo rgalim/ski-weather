@@ -6,7 +6,6 @@ import io.ktor.serialization.jackson.*
 import io.ktor.server.application.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
-import io.ktor.server.plugins.*
 import io.ktor.server.plugins.contentnegotiation.*
 import io.ktor.server.plugins.statuspages.*
 import io.ktor.server.response.*
@@ -16,8 +15,10 @@ import org.koin.ktor.plugin.Koin
 import skiweather.config.objectMapper
 import skiweather.di.appModule
 import skiweather.exception.WeatherApiException
-import skiweather.route.skiAreas
+import skiweather.route.forecastRoutes
+import skiweather.route.skiAreaRoutes
 import skiweather.service.SkiAreaService
+import skiweather.service.WeatherService
 import skiweather.utils.logger
 
 fun main() {
@@ -41,7 +42,7 @@ fun Application.module() {
         exception<WeatherApiException> { call, cause ->
             call.respond(HttpStatusCode.InternalServerError, cause.message ?: "Internal Weather API error")
         }
-        exception<BadRequestException> { call, cause ->
+        exception<IllegalArgumentException> { call, cause ->
             call.respond(HttpStatusCode.BadRequest, cause.message ?: "Invalid parameters")
         }
         exception<Throwable> { call, cause ->
@@ -51,8 +52,10 @@ fun Application.module() {
     }
 
     val skiAreaService by inject<SkiAreaService>()
+    val weatherService by inject<WeatherService>()
 
     routing {
-        skiAreas(skiAreaService)
+        skiAreaRoutes(skiAreaService)
+        forecastRoutes(weatherService)
     }
 }

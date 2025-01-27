@@ -25,7 +25,7 @@ class SkiAreaService(
         val weatherHistoryList: List<WeatherHistory> = weatherService.getWeatherHistory(locations)
         val history: Map<String, Double> = skiAreaWeatherService.convertToHistoryMap(weatherHistoryList)
 
-        val weatherForecastList: List<WeatherForecast> = weatherService.getWeatherForecast(locations)
+        val weatherForecastList: List<WeatherForecast> = weatherService.getWeatherForecasts(locations)
         val skiAreas: List<SkiArea> = weatherForecastList.asSequence()
             .map { weatherForecast -> createSkiArea(weatherForecast, history)}
             .sortedByDescending { skiArea -> skiArea.score }

@@ -45,7 +45,7 @@ class SkiAreaServiceTest {
         runBlocking {
             `when`(locationService.getLocations()).thenReturn(LOCATIONS)
             `when`(weatherService.getWeatherHistory(LOCATIONS)).thenReturn(WEATHER_HISTORY)
-            `when`(weatherService.getWeatherForecast(LOCATIONS))
+            `when`(weatherService.getWeatherForecasts(LOCATIONS))
                 .thenReturn(listOf(WEATHER_FORECAST_SOLDEN, WEATHER_FORECAST_KITZBUHEL))
             `when`(skiAreaWeatherService.convertToHistoryMap(WEATHER_HISTORY)).thenReturn(HISTORY_MAP)
             `when`(skiAreaWeatherService.getSkiAreaWeather(DAY_FORECAST_SOLDEN, 0.2))
@@ -106,7 +106,7 @@ class SkiAreaServiceTest {
             `when`(locationService.getLocations()).thenReturn(LOCATIONS)
             `when`(weatherService.getWeatherHistory(LOCATIONS)).thenReturn(WEATHER_HISTORY)
             `when`(skiAreaWeatherService.convertToHistoryMap(WEATHER_HISTORY)).thenReturn(HISTORY_MAP)
-            `when`(weatherService.getWeatherForecast(LOCATIONS)).thenThrow(WeatherApiException("Something went wrong"))
+            `when`(weatherService.getWeatherForecasts(LOCATIONS)).thenThrow(WeatherApiException("Something went wrong"))
 
             val exception = assertThrows<WeatherApiException> { skiAreaService.getSkiAreas() }
 
@@ -126,7 +126,7 @@ class SkiAreaServiceTest {
 
             `when`(locationService.getLocations()).thenReturn(LOCATIONS)
             `when`(weatherService.getWeatherHistory(LOCATIONS)).thenReturn(WEATHER_HISTORY)
-            `when`(weatherService.getWeatherForecast(LOCATIONS))
+            `when`(weatherService.getWeatherForecasts(LOCATIONS))
                 .thenReturn(listOf(weatherForecast))
             `when`(skiAreaWeatherService.convertToHistoryMap(WEATHER_HISTORY)).thenReturn(HISTORY_MAP)
 
@@ -143,7 +143,7 @@ class SkiAreaServiceTest {
             `when`(locationService.getLocations()).thenReturn(LOCATIONS)
             `when`(weatherService.getWeatherHistory(LOCATIONS)).thenReturn(WEATHER_HISTORY)
             `when`(skiAreaWeatherService.convertToHistoryMap(WEATHER_HISTORY)).thenReturn(HISTORY_MAP)
-            `when`(weatherService.getWeatherForecast(LOCATIONS)).thenReturn(listOf(WEATHER_FORECAST_SOLDEN))
+            `when`(weatherService.getWeatherForecasts(LOCATIONS)).thenReturn(listOf(WEATHER_FORECAST_SOLDEN))
             `when`(skiAreaWeatherService.getSkiAreaWeather(DAY_FORECAST_SOLDEN, 0.2))
                 .thenThrow(IllegalArgumentException("Hour data list must not be empty"))
 
@@ -160,7 +160,7 @@ class SkiAreaServiceTest {
             `when`(locationService.getLocations()).thenReturn(LOCATIONS)
             `when`(weatherService.getWeatherHistory(LOCATIONS)).thenReturn(WEATHER_HISTORY)
             `when`(skiAreaWeatherService.convertToHistoryMap(WEATHER_HISTORY)).thenReturn(HISTORY_MAP)
-            `when`(weatherService.getWeatherForecast(LOCATIONS)).thenReturn(listOf(WEATHER_FORECAST_SOLDEN))
+            `when`(weatherService.getWeatherForecasts(LOCATIONS)).thenReturn(listOf(WEATHER_FORECAST_SOLDEN))
             `when`(skiAreaWeatherService.getSkiAreaWeather(DAY_FORECAST_SOLDEN, 0.2))
                 .thenReturn(SKI_AREA_WEATHER_SOLDEN)
             `when`(scoreService.scoreSkiArea(SKI_AREA_WEATHER_SOLDEN))

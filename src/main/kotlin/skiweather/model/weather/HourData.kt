@@ -7,5 +7,6 @@ data class HourData(
     val humidity: Int,
     val cloud: Int,
     val visKm: Double,
-    val uv: Double
+    val uv: Double,
+    val snowCm: Double
 )

@@ -1,5 +1,8 @@
 # Changelog
 
+## [0.4.0] - 2025-01-27
+- add 3 days forecast
+
 ## [0.3.0] - 2025-01-20
 - add alerts
 
