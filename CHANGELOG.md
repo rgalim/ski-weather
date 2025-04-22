@@ -1,13 +1,16 @@
 # Changelog
 
+## [0.4.1] - 2025-04-22
+- Add readme file
+
 ## [0.4.0] - 2025-01-27
-- add 3 days forecast
+- Add 3 days forecast
 
 ## [0.3.0] - 2025-01-20
-- add alerts
+- Add alerts
 
 ## [0.2.3] - 2025-01-20
-- add status pages handling
+- Add status pages handling
 
 ## [0.2.2] - 2025-01-16
 - Update ski area model
